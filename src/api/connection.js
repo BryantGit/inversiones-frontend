@@ -13,6 +13,7 @@ export async function getInversion(id) {
 }
 
 export async function createInversion(data) {
+  console.log('Enviando a la API:', data); // ver valor de data
   const res = await fetch(`${API_URL}/inversiones`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
