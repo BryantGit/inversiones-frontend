@@ -35,23 +35,23 @@ const Detalle = ({ open, onClose, detalle }) => {
           </Typography>
           <Typography>
             <strong>Rendimiento Primer Año:</strong>{' '}
-            {detalle?.rendimientoPrimerAnio != null ? detalle.rendimientoPrimerAnio.toFixed(2) : 'N/A'}
+            {detalle?.rendimientoPrimerAnio != null ? Number(detalle.rendimientoPrimerAnio).toFixed(2) : 'N/A'}
           </Typography>
           <Typography>
             <strong>Rendimiento Total:</strong>{' '}
-            {detalle?.interesTotal != null ? detalle.interesTotal.toFixed(2) : 'N/A'}
+            {detalle?.interesTotal != null ? Number(detalle.interesTotal).toFixed(2) : 'N/A'}
           </Typography>
           <Typography>
             <strong>Saldo Final:</strong>{' '}
-            {detalle?.capitalFinal != null ? detalle.capitalFinal.toFixed(2) : 'N/A'}
+            {detalle?.capitalFinal != null ? Number(detalle.capitalFinal).toFixed(2) : 'N/A'}
           </Typography>
           <Typography>
             <strong>Fecha Fin:</strong> {detalle?.fechaFin ?? 'N/A'}
           </Typography>
 
           <Box mt={2}>
-            <Button variant="contained" color="secondary" onClick={() => alert('Otra acción')}>
-              Ver más detalles
+            <Button variant="contained" color="secondary" onClick={onClose}>
+              Cerrar
             </Button>
           </Box>
         </>

@@ -5,42 +5,45 @@ import { Button, Box, TextField } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import InversionModal from './inversionForm.jsx';
 import { createInversion } from '../api/connection.js';
+import Detalle from './Detalle';
 
-import Detalle from './Detalle.jsx';
-
-const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  { field: 'montoInicial', headerName: 'Monto Inicial', width: 150 },
-  { field: 'tasaInteres', headerName: 'Tasa de Interés', width: 150 },
-  { field: 'fechaInicio', headerName: 'Fecha de Inicio', width: 110 },
-  { field: 'plazoMeses', headerName: 'Plazo (Meses)', width: 160 },
-  {
-    field: 'verDetalles',
-    headerName: 'Detalles',
-    width: 150,
-    sortable: false,
-    renderCell: (params) => (
-      <Button
-        startIcon={<VisibilityIcon />}
-        variant="outlined"
-        size="small"
-        onClick={() => {
-          // Aquí puedes manejar la acción, por ejemplo:
-          alert(`Detalles de la inversión ID: ${params.row.id}`);
-        }}
-      >
-        Ver
-      </Button>
-    ),
-  },
-];
+ 
 
 export default function InversionList() {
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'montoInicial', headerName: 'Monto Inicial', width: 150 },
+    { field: 'tasaInteres', headerName: 'Tasa de Interés', width: 150 },
+    { field: 'fechaInicio', headerName: 'Fecha de Inicio', width: 110 },
+    { field: 'plazoMeses', headerName: 'Plazo (Meses)', width: 100 },
+    {
+      field: 'verDetalles',
+      headerName: 'Detalles',
+      flex: 1,
+      minWidth: 150,
+      sortable: false,
+      renderCell: (params) => (
+        <Button
+          startIcon={<VisibilityIcon />}
+          variant="outlined"
+          size="small"
+          onClick={() => {
+            setDetalleSeleccionado(params.row);
+            setOpenDetalle(true);
+          }}
+        >
+          Ver
+        </Button>
+      ),
+    },
+  ];
   const [inversiones, setInversiones] = useState([]);
   const [inversionesFiltradas, setInversionesFiltradas] = useState([]);
   const [error, setError] = useState(null);
   const [busquedaId, setBusquedaId] = useState('');
   const [openModalAgregar, setOpenModalAgregar] = useState(false);
+  const [openDetalle, setOpenDetalle] = useState(false);
+  const [detalleSeleccionado, setDetalleSeleccionado] = useState(null);
 
   // Aquí los estados para el modal detalle:
   const [openModalDetalles, setOpenModalDetalles] = useState(false);
@@ -121,7 +124,7 @@ export default function InversionList() {
         disableSelectionOnClick
       />
 
-
+      <Detalle open={openDetalle} onClose={() => setOpenDetalle(false)} detalle={detalleSeleccionado} />
       <InversionModal open={openModalAgregar} onClose={() => setOpenModalAgregar(false)} onSave={guardarInversion} />
     </div>
   );
