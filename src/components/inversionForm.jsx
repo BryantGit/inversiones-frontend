@@ -16,12 +16,18 @@ import {
 import { getInversiones } from '../api/connection.js';
 
 const InversionModal = ({ open, onClose, onSave }) => {
-  const [formData, setFormData] = React.useState({
+  const initialForm = {
     montoInicial: '',
     tasaInteres: '',
-    fechaInicio: new Date().toISOString().split('T')[0],
     plazoMeses: '',
-  });
+    fechaInicio: new Date().toISOString().split('T')[0],
+    interesTotal: '',
+    capitalFinal: '',
+    rendimientoMensual: '',
+    fechaFin: ''
+  };
+
+  const [formData, setFormData] = React.useState(initialForm);
 
   const [calculos, setCalculos] = React.useState({
     rendimientoMensual: 0,
@@ -29,6 +35,18 @@ const InversionModal = ({ open, onClose, onSave }) => {
     rendimientoTotal: 0,
     saldoFinal: 0
   });
+  React.useEffect(() => {
+  if (open) {
+    setFormData(initialForm);
+    setCalculos({
+      rendimientoMensual: 0,
+      rendimientoPrimerAnio: 0,
+      rendimientoTotal: 0,
+      saldoFinal: 0
+    });
+  }
+}, [open]);
+
   React.useEffect(() => {
     const monto = parseFloat(formData.montoInicial);
     const tasa = parseFloat(formData.tasaInteres);
@@ -57,6 +75,10 @@ const InversionModal = ({ open, onClose, onSave }) => {
       [name]: value
     }));
   };
+  const handleCancel = () => {
+  setFormData(initialForm);
+  onClose(); // Esto cierra el modal, si tienes una prop así
+};
 
   const handleSubmit = async () => {
   try {
@@ -137,7 +159,7 @@ return (
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
+        <Button onClick={handleCancel}>Cancelar</Button>
         <Button onClick={handleSubmit} variant="contained">Guardar</Button>
       </DialogActions>
     </Dialog>
